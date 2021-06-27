@@ -11,6 +11,7 @@ var mainContent = document.querySelector("main");
 var currentQuestionIndex = 0;
 var timeTotal = 60;
 var currentTimer;
+var currentInterval;
 var currentTimeLeft;
 var timePenalty = 5;
 var question0 = {
@@ -31,8 +32,10 @@ function selectPosition(event) {
         clearContent();
         startQuiz();
     } else if (element.matches(".option")) {
+        console.log("I am executed!");
         var result = document.createElement("div");
-        result.setAttribute("style", "border-top: 2px solid black");
+        result.setAttribute("style", "border-top: 2px solid black; width: 100%");
+        mainContent.appendChild(result);
         if (element.dataset.ans == "true") {
             result.textContent = "Correct!"
         } else {
@@ -41,19 +44,23 @@ function selectPosition(event) {
                 currentTimeLeft -= timePenalty;
                 document.querySelector("#timeleft").textContent = "time: " + currentTimeLeft;
                 setTimer(currentTimeLeft);
-            } else {
-                currentTimeLeft = 0;
-                loadTimeoutPage();
-                return;
+                } else {
+                    setTimer(0.01);
+                    document.querySelector("#timeleft").textContent = "time: " + 0;
+                    currentTimeLeft = 0;
             }
         }
-        currentQuestionIndex++;
-        clearContent();
-        if (currentQuestionIndex == questions.length) {
-            loadResultPage();
-        } else {
-            loadNewQuestion();
-        }
+        setTimeout(function () {
+            result.textContent = "";
+            result.setAttribute("style", "border-top: none");
+        }, 1000 * 1);
+        // currentQuestionIndex++;
+        // clearContent();
+        // if (currentQuestionIndex == questions.length) {
+        //     loadResultPage();
+        // } else {
+        //     loadNewQuestion();
+        // }
 
     } else if (false/*select to view highscore*/) {
         // clear menu
@@ -69,13 +76,13 @@ function clearContent() {
 }
 
 function startQuiz() {
-    currentTimeLeft = timeTotal;
+    currentTimeLeft = 50;
     document.querySelector("#timeleft").textContent = "time: " + currentTimeLeft
-    setTimer(timeTotal);
-    setInterval(function() {
+    currentInterval = setInterval(function() {
         currentTimeLeft--;
         document.querySelector("#timeleft").textContent = "time: " + currentTimeLeft;
     }, 1000 * 1);
+    setTimer(currentTimeLeft);
     clearContent();
     loadNewQuestion();
 }
@@ -90,18 +97,18 @@ function loadNewQuestion() {
     questionBox.appendChild(question);
     questionBox.appendChild(options);
     question.textContent = currentQuestion.questionDescr;
-    console.log(currentQuestion.options);
+    mainContent.setAttribute("style", "width: 300px; justify-content: flex-start");    
     for (var i = 0; i < currentQuestion.options.length; i++) {
         var opElement = document.createElement("div");
         opElement.setAttribute("class", "option");
         opElement.setAttribute("data-ans", i == currentQuestion.correctIndex? "true" : "false");
         options.appendChild(opElement);
         opElement.textContent = currentQuestion.options[i];
-        console.log(opElement);
     }
 }
 
 function loadTimeOutPage() {
+    clearInterval(currentInterval);
     clearTimeout(currentTimer);
     mainContent.innerHTML = "TIME OUT!";
 }
@@ -118,6 +125,7 @@ function loadResultPage() {
 function setTimer(timeLength) {
     clearTimeout(currentTimer);
     currentTimer = setTimeout(function() {
+        clearInterval(currentInterval);
         loadTimeOutPage();
     }, 1000 * timeLength);
 }
