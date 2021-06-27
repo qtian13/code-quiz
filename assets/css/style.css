@@ -1,0 +1,30 @@
+.status {
+    color:  rgb(71, 39, 64);
+    margin: 100px 100px 0px 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+main {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+}
+#startdisplay {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1,
+h2,
+#startbutton {
+    text-align: center;
+}
+
+#startbutton {
+    background-color: rgb(71, 39, 64);
+    color: white;
+}
