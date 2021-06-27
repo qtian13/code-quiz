@@ -6,7 +6,7 @@
 }
 
 main {
-    width: 70%;
+    width: 500px;
     margin-top: 100px;
     margin-left: auto;
     margin-right: auto;
@@ -14,7 +14,6 @@ main {
     flex-wrap: wrap;
 }
 #startdisplay {
-    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,7 +31,8 @@ h2,
     color: white;
 }
 
-.result-box h3 {
+h3 {
+    width: 100%;
     font-size: 20px;
 }
 
@@ -48,4 +48,11 @@ h2,
 textarea, button {
     margin-left: 5px;
     margin-right: 5px;
+}
+
+#highscore-box {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }

@@ -1,17 +1,26 @@
 var homepageSnippet = 
-    '<div id="startdisplay">' +
-        '<h1>Coding Quiz Challenge</h1>' +
-        '<h2>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</h2>' +
-        '<div id="startbutton">' +
-            'Start Quiz' +
-        '</div>' +
-    '</div>';
+        '<div id="startdisplay">' +
+            '<h1>Coding Quiz Challenge</h1>' +
+            '<h2>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</h2>' +
+            '<div id="startbutton">' +
+                'Start Quiz' +
+            '</div>' +
+        '</div>';
 var resultpageSnippet =
-    '<h3>All done!</h3>' +
-    '<div id="score">Your final score is </div>' +
-    '<div class="submit">' +
-        'Enter Initials: <textarea name="initials" id="initials" cols="30" rows="1"></textarea><button id="submit-score">submit</button>' +
-    '</div>';
+        '<h3>All done!</h3>' +
+        '<div id="score">Your final score is </div>' +
+        '<div class="submit">' +
+            'Enter Initials: <textarea name="initials" id="initials" cols="30" rows="1"></textarea><button id="submit-score">submit</button>' +
+        '</div>';
+
+var highscoreSnippet = 
+        '<div id="highscore-box">' +
+            '<h3>Highscores</h3>' +
+            '<div id="highscore-list">' +
+            '</div>' +
+            '<button id="to-homepage">Go Back</button>' +
+            '<button id="clear-highscore">Clear Highscores</button>' +
+        '</div>'
 
 var mainContent = document.querySelector("main");
 var currentQuestionIndex = 0;
@@ -40,7 +49,7 @@ function loadHomepage() {
 
 function selectPosition(event) {
     var element = event.target;
-    if (element === document.querySelector("#startbutton")) {
+    if (element.matches("#startbutton")) {
         clearContent();
         startQuiz();
     } else if (element.matches(".option")) {
@@ -73,12 +82,30 @@ function selectPosition(event) {
             loadNewQuestion();
         }
 
-    } else if (false/*select to view highscore*/) {
-        // clear menu
-        // clear content
-        // display the score history
-    } else if (false/* select submit name */) {
-        // store the result to local storage
+    } else if (element.matches("#highscore")) {
+        console.log("I am executed");
+        mainContent.innerHTML = "";
+        loadHighScores();
+    } else if (element.matches("#submit-score")) {
+        var initials = document.querySelector("#initials").textContent.trim();
+        if (initials.length != 2) {
+            alert("Please enter correct initials of your first name and last name without space!");
+            return;
+        }
+        var newScore = {
+            name: initials,
+            score: currentTimeLeft,
+        };
+        updateScoreRecord(newScore);
+        currentQuestionIndex = 0;
+        mainContent.innerHTML = "";
+        loadHighScores();
+    } else if (element.matches("#to-homepage")) {
+        mainContent.innerHTML = "";
+        loadHomepage();
+    } else if (element.matches("#clear-highscore")) {
+        //clear the records
+        loadHighScores();
     }
 }
 
@@ -116,7 +143,6 @@ function loadNewQuestion() {
     questionBox.appendChild(question);
     questionBox.appendChild(options);
     question.textContent = currentQuestion.questionDescr;
-    mainContent.setAttribute("style", "width: 500px");    
     for (var i = 0; i < currentQuestion.options.length; i++) {
         var opElement = document.createElement("div");
         opElement.setAttribute("class", "option");
@@ -148,6 +174,33 @@ function setTimer(timeLength) {
         clearInterval(currentInterval);
         loadTimeOutPage();
     }, 1000 * timeLength);
+}
+
+function loadHighScores() {
+    var scoreList = document.querySelector("#highscore-list");
+    var scores = localStorage.getItem("scores");
+    for (var i = 0; i < scores.length; i++) {
+        var score = document.createElement("div");
+        score.textContent = (i + 1) + ". " + scores[i] 
+    }
+    mainContent.innerHTML = highscoreSnippet;
+
+
+}
+
+function updateScoreRecord(newItem) {
+    var scores = [];
+    var index = 0;
+    if (localStorage.getItem("scores")) {
+        scores = localStorage.getItem("scores");
+    }
+    for (; index < scores.length; index++) {
+        if (scores[i].initials < newItem.initials) {
+            break;
+        }
+    }
+    scores.splice(index, 0, newItem);
+    localStorage.setItem("scores", scores);
 }
 
 loadHomepage();
