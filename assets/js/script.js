@@ -6,17 +6,17 @@ var currentInterval;
 var currentTimeLeft = 0;
 var timePenalty = 5;
 var validInitial = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var question0 = {
-    questionDescr : "what is my number?",
-    options: ["1", "2", "3", "4"],
-    correctIndex: 2,
-};
-var question1 = {
-    questionDescr : "what is my second number?",
-    options: ["1", "2", "3", "4"],
-    correctIndex: 3,
-}
-var questions = [question0, question1];
+// var question0 = {
+//     questionDescr : "what is my number?",
+//     options: ["1", "2", "3", "4"],
+//     correctIndex: 2,
+// };
+// var question1 = {
+//     questionDescr : "what is my second number?",
+//     options: ["1", "2", "3", "4"],
+//     correctIndex: 3,
+// }
+var questions = JSON.parse(data);
 var timeTotal = timePenalty * questions.length;
 
 var topBarSnippet = 
@@ -214,3 +214,6 @@ function createNewScore() {
 
 loadHomepage();
 addEventListener("click", selectPosition);
+
+
+console.log("\"" + JSON.stringify(questions) + "\"");
