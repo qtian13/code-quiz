@@ -1,34 +1,44 @@
-.status {
+body {
+    padding-top: 100px;
+}
+
+.top-bar {
     color:  rgb(71, 39, 64);
-    margin: 100px 100px 0px 100px;
-    display: flex;
-    justify-content: space-between;
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+#highscore {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#timeleft {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 main {
     width: 500px;
-    margin-top: 100px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 100px auto 100px auto;
     display: flex;
     flex-wrap: wrap;
 }
-#startdisplay {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 
 h1,
-h2,
-#startbutton {
+.rules {
     text-align: center;
 }
 
 #startbutton {
+    display: block;
     background-color: rgb(71, 39, 64);
     color: white;
+    margin: 30px auto;
 }
 
 h3 {
@@ -50,9 +60,14 @@ textarea, button {
     margin-right: 5px;
 }
 
+
+
 #highscore-box {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+#highscore-list {
+    width: 100%;
 }

@@ -1,10 +1,38 @@
+var mainContent = document.querySelector("main");
+var topBar = document.querySelector(".top-bar");
+var currentQuestionIndex = 0;
+var currentTimer;
+var currentInterval;
+var currentTimeLeft = 0;
+var timePenalty = 5;
+var question0 = {
+    questionDescr : "what is my number?",
+    options: ["1", "2", "3", "4"],
+    correctIndex: 2,
+};
+var question1 = {
+    questionDescr : "what is my second number?",
+    options: ["1", "2", "3", "4"],
+    correctIndex: 3,
+}
+var questions = [question0, question1];
+var timeTotal = timePenalty * questions.length;
+
+var topBarSnippet = 
+        '<div id="highscore">' +
+            'View Highscores' +
+        '</div>' +
+        '<div id="timeleft">' +
+            'Time: 0' +
+        '</div>';
+
 var homepageSnippet = 
-        '<div id="startdisplay">' +
+        '<div class="homepage-content">' +
             '<h1>Coding Quiz Challenge</h1>' +
-            '<h2>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</h2>' +
-            '<div id="startbutton">' +
+            '<p class="rules">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ' + timePenalty + ' seconds!</p>' +
+            '<button id="startbutton">' +
                 'Start Quiz' +
-            '</div>' +
+            '</button>' +
         '</div>';
 var resultpageSnippet =
         '<h3>All done!</h3>' +
@@ -22,27 +50,8 @@ var highscoreSnippet =
             '<button id="clear-highscore">Clear Highscores</button>' +
         '</div>'
 
-var mainContent = document.querySelector("main");
-var currentQuestionIndex = 0;
-var currentTimer;
-var currentInterval;
-var currentTimeLeft;
-var timePenalty = 5;
-var question0 = {
-    questionDescr : "what is my number?",
-    options: ["1", "2", "3", "4"],
-    correctIndex: 2,
-};
-var question1 = {
-    questionDescr : "what is my second number?",
-    options: ["1", "2", "3", "4"],
-    correctIndex: 3,
-}
-var questions = [question0, question1];
-var timeTotal = timePenalty * questions.length;
-
-
 function loadHomepage() {
+    topBar.innerHTML = topBarSnippet;
     mainContent.setAttribute("style", "justify-content: center");
     mainContent.innerHTML = homepageSnippet;
 }
@@ -87,7 +96,7 @@ function selectPosition(event) {
         mainContent.innerHTML = "";
         loadHighScores();
     } else if (element.matches("#submit-score")) {
-        var initials = document.querySelector("#initials").textContent.trim();
+        var initials = document.querySelector("#initials").value.trim();
         if (initials.length != 2) {
             alert("Please enter correct initials of your first name and last name without space!");
             return;
@@ -96,7 +105,9 @@ function selectPosition(event) {
             name: initials,
             score: currentTimeLeft,
         };
+        console.log(newScore);
         updateScoreRecord(newScore);
+        console.log(localStorage.getItem("scores"));
         currentQuestionIndex = 0;
         mainContent.innerHTML = "";
         loadHighScores();
@@ -104,7 +115,7 @@ function selectPosition(event) {
         mainContent.innerHTML = "";
         loadHomepage();
     } else if (element.matches("#clear-highscore")) {
-        //clear the records
+        localStorage.removeItem("scores");
         loadHighScores();
     }
 }
@@ -138,7 +149,7 @@ function createQuestionContainer() {
 function loadNewQuestion() {
     var currentQuestion = questions[currentQuestionIndex];
     var questionBox = document.querySelector(".question-box");
-    var question = document.createElement("div");
+    var question = document.createElement("h3");
     var options = document.createElement("div");
     questionBox.appendChild(question);
     questionBox.appendChild(options);
@@ -177,30 +188,33 @@ function setTimer(timeLength) {
 }
 
 function loadHighScores() {
-    var scoreList = document.querySelector("#highscore-list");
-    var scores = localStorage.getItem("scores");
+    var scoreList;
+    var scores = JSON.parse(localStorage.getItem("scores"));
+    topBar.innerHTML = "";
+    mainContent.innerHTML = highscoreSnippet;
+    scoreList = document.querySelector("#highscore-list")
     for (var i = 0; i < scores.length; i++) {
         var score = document.createElement("div");
-        score.textContent = (i + 1) + ". " + scores[i] 
+        score.textContent = (i + 1) + ". " + scores[i].name + " " + scores[i].score;
+        scoreList.appendChild(score);
+        score.setAttribute("style", "width: 100%");
     }
-    mainContent.innerHTML = highscoreSnippet;
-
-
 }
 
 function updateScoreRecord(newItem) {
     var scores = [];
     var index = 0;
     if (localStorage.getItem("scores")) {
-        scores = localStorage.getItem("scores");
+        console.log("localStorage scores not empty")
+        scores = JSON.parse(localStorage.getItem("scores"));
     }
     for (; index < scores.length; index++) {
-        if (scores[i].initials < newItem.initials) {
+        if (scores[index].score < newItem.score) {
             break;
         }
     }
     scores.splice(index, 0, newItem);
-    localStorage.setItem("scores", scores);
+    localStorage.setItem("scores", JSON.stringify(scores));
 }
 
 loadHomepage();
