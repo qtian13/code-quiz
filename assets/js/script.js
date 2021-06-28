@@ -6,18 +6,17 @@ var currentInterval;
 var currentTimeLeft = 0;
 var timePenalty = 5;
 var validInitial = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-// var question0 = {
-//     questionDescr : "what is my number?",
-//     options: ["1", "2", "3", "4"],
-//     correctIndex: 2,
-// };
-// var question1 = {
-//     questionDescr : "what is my second number?",
-//     options: ["1", "2", "3", "4"],
-//     correctIndex: 3,
-// }
-var questions = JSON.parse(data);
-var timeTotal = timePenalty * questions.length;
+var questions;
+var timeTotal;
+  
+fetch('https://raw.githubusercontent.com/qtian13/code-quiz/main/assets/json/data.json').then(response => {
+    response.json().then(data => {
+        questions = data;
+        timeTotal = timePenalty * questions.length;
+        console.log(questions);
+    });
+});
+
 
 var topBarSnippet = 
         '<div id="highscore">View Highscores</div>' +
