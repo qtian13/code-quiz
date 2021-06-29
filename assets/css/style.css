@@ -36,6 +36,13 @@ h1,
     margin: 30px auto;
 }
 
+.option {
+    border-radius: 3px;
+    background-color: rgb(180, 157, 202);
+    padding: 4px;
+    margin-top: 3px;
+}
+
 .question-result {
     margin-top: 15px;
 }

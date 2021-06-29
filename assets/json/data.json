@@ -1,10 +1,50 @@
 [{
-    "questionDescr" : "what is my second number?",
-    "options": ["1", "2", "3", "4"],
+    "questionDescr" : "The correct sequence of HTML tags for starting a webpage is __________?",
+    "options": ["Head, Title, HTML, body", "HTML, Body, Title, Head", "HTML, Head, Title, Body", "HTML, Title, Head, Body"],
+    "correctIndex": 2
+},
+{
+    "questionDescr" : "<input> is __________",
+    "options": ["a format tag", "an empty tag", "All of the above", "None of the above"],
+    "correctIndex": 1
+},
+{
+    "questionDescr" : "Which of the following tag is used to define options in a drop-down selection list?",
+    "options": ["<select>", "<list>", "<dropdown>", "<option>"],
     "correctIndex": 3
 },
 {
-    "questionDescr" : "what is my number?",
-    "options": ["1", "2", "3", "4"],
+    "questionDescr" : "What are the types of unordered or bulleted list in HTML?",
+    "options": ["disc, square, triangle", "polygon, triangle, circle", "disc, circle, square", "All of the above"],
     "correctIndex": 2
+},
+{
+    "questionDescr" : "A program in HTML can be rendered and read by __________",
+    "options": ["Web browser", "Server", "Interpreter", "None of the above"],
+    "correctIndex": 0
+},
+{
+    "questionDescr" : "If we don't want to allow a floating div to the left side of an element, which css property will we use?",
+    "options": ["margin", "clear", "float", "padding"],
+    "correctIndex": 1
+},
+{
+    "questionDescr" : "If we want to wrap a block of text around an image, which css property will we use?",
+    "options": ["wrap", "push", "float", "align"],
+    "correctIndex": 2
+},
+{
+    "questionDescr" : "If we want to show an Arrow as cursor, then which value we will use?",
+    "options": ["pointer", "default", "arrowD", "arr"],
+    "correctIndex": 1
+},
+{
+    "questionDescr" : "Which of the following properties will we use to display border around a cell without any content?",
+    "options": ["empty-cell", "blank-cell", "noncontent-cell", "void-cell"],
+    "correctIndex": 0
+},
+{
+    "questionDescr" : "Which element is used in the <HEAD> section on an HTML / XHTMLpage, if we want to use an external style sheet file to decorate the page?",
+    "options": ["<src>", "<link>", "<style>", "<css>"],
+    "correctIndex": 1
 }]
