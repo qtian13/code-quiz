@@ -35,7 +35,7 @@
 },
 {
     "questionDescr" : "If we want to show an Arrow as cursor, then which value we will use?",
-    "options": ["pointer", "default", "arrowD", "arr"],
+    "options": ["pointer", "default", "arrow", "arr"],
     "correctIndex": 1
 },
 {

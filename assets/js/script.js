@@ -2,65 +2,54 @@ var mainContent = document.querySelector("main");
 var topBar = document.querySelector(".top-bar");
 var timeLeftEl;
 var timeTotal;
-var timePenalty = 5;
+var timePenalty = 10;
 var timeLeft = 0;
 var quizTimer;
 var resultTimer;
 var quizInterval;
 var duringQuiz = false;
-
 var validInitial = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var questions;
 var currentQuestionIndex;
+
+
+// the homepage content: title, instructions and start quiz button
+var homepageSnippet = 
+        '<h1>Coding Quiz Challenge</h1>' +
+        '<p class="rules"></p>' +
+        '<button id="start-button" class="large-button">Start Quiz</button>';
+
+// display highscore page
+var highscoreSnippet =
+        '<div class="highscore-box">' +
+            '<h1>Highscores</h1>' +
+            '<ol id="highscore-list"></ol>' +
+        '</div>'
 
 // load the questions from JSON file to current js file and initiate questions and timeTotal
 fetch('https://raw.githubusercontent.com/qtian13/code-quiz/main/assets/json/data.json').then(response => {
     response.json().then(data => {
         questions = data;
         timeTotal = timePenalty * questions.length;
+        loadHomepage();
     });
 });
 
-// the top block display button 'view highscores' and 'Time left' info
-var topBarSnippet = 
-        '<div id="highscore">View Highscores</div>' +
-        '<div id="timeleft">Time left: 0</div>';
-
-// the homepage content: title, instructions and start quiz button
-var homepageSnippet = 
-        '<h1>Coding Quiz Challenge</h1>' +
-        '<p class="rules">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ' + timePenalty + ' seconds!</p>' +
-        '<button id="startbutton">Start Quiz</button>';
-
-// the pagedisplayed when all the questions answered
-var resultpageSnippet =
-        '<h2>All done!</h2>' +
-        '<div id="score">Your final score is </div>' +
-        '<form class="submit">' +
-            'Enter Initials: ' + 
-            '<input id="initials"></textarea>' +
-            '<button id="submit-score">submit</button>' +
-        '</form>';
-
-// display highscore page
-var highscoreSnippet = 
-        '<h2>Highscores</h2>' +
-        '<ol id="highscore-list"></ol>' +
-        '<button id="to-homepage">Go Back</button>' +
-        '<button id="clear-highscore">Clear Highscores</button>';
-
-// load homepage with view highscore button, Timeleft info, page title, quiz instruction and start quiz button
+// load homepage with view highscore button, Timeleft info on the top
+// page title, quiz instruction and start quiz button in main content area
 function loadHomepage() {
-    topBar.innerHTML = topBarSnippet;
+    topBar.innerHTML = '<div id="highscore">View Highscores</div>' +
+                        '<div id="timeleft">Time left: 0</div>';
     timeLeftEl = document.querySelector("#timeleft")
     mainContent.innerHTML = homepageSnippet;
+    document.querySelector(".rules").textContent = "Please try your best to answer the following " + questions.length + " code-related questions within " + timeTotal + " seconds! Keep in mind that each incorrect answer will penalize your score/time by " + timePenalty + " points/seconds! Click the button to start the quiz when you are ready!";
 }
 
 // check the target of the event click on body and deal with the html accordingly
 function selectPosition(event) {
     var element = event.target;
     // start quiz when start quiz button clicked
-    if (element.matches("#startbutton")) {
+    if (element.matches("#start-button")) {
         startQuiz();
     // check the result when option of question is clicked
     } else if (element.matches(".option")) {
@@ -83,14 +72,13 @@ function selectPosition(event) {
         event.preventDefault();
         // add current score to record and load highscore page
         if (createNewScore() != null) {
-            duringQuiz = false;
             updateScoreRecord(newScore);
             currentQuestionIndex = 0;
             mainContent.innerHTML = "";
             loadHighScores();
         }
     // go back to homepage when 'go back' button on view highscore page is clicked
-    } else if (element.matches("#to-homepage")) {
+    } else if (element.matches("#go-back") || element.matches("#homepage-button")) {
         loadHomepage();
     } 
     // remove the item scores in localStorage and reload highscore page
@@ -109,20 +97,18 @@ function startQuiz() {
         timeLeftEl.textContent = "Time left: " + timeLeft;
     }, 1000 * 1);
     setTimer(timeLeft);
-    createQuestionContainer();
     currentQuestionIndex = 0;
+    createQuestionContainer();
     loadQuestion(questions[currentQuestionIndex]);
 }
 
 //create block elements as containers of current question and the result of previous question
 function createQuestionContainer() {
-    var questionDisplay = document.createElement("div");
-    var questionResultDisplay = document.createElement("div");
-    questionDisplay.setAttribute("class", "question-box");
-    questionResultDisplay.setAttribute("class", "question-result");
-    mainContent.innerHTML = "";
-    mainContent.appendChild(questionDisplay);
-    mainContent.appendChild(questionResultDisplay);
+    mainContent.innerHTML = '<div class="question-box"></div>' +
+                            '<div class="question-info">' +
+                                '<div class="question-result"></div>' +
+                                '<div class="question-serial-number"></div>' +
+                            '</div>';
 }
 
 // display current question
@@ -130,6 +116,7 @@ function loadQuestion(question) {
     var questionBox = document.querySelector(".question-box");
     var questionDescrEl = document.createElement("h2");
     var optionsEl = document.createElement("div");
+    var questionSerialNumber = document.querySelector(".question-serial-number");
     questionBox.appendChild(questionDescrEl);
     questionBox.appendChild(optionsEl);
     questionDescrEl.textContent = question.questionDescr;
@@ -140,18 +127,52 @@ function loadQuestion(question) {
         optionsEl.appendChild(optionElement);
         optionElement.textContent = question.options[i];
     }
+    questionSerialNumber.setAttribute("style", "text-align: center");
+    questionSerialNumber.textContent = (currentQuestionIndex + 1) + "/" + questions.length;
+
 }
 
 // delete the live interval and timeout; 
 // display the result and a form for recording score
 function loadResultPage() {
+    var result = document.createElement("h2");
+    var score = document.createElement("div");
+    var form = document.createElement("form");
+
+    duringQuiz = false;
+    form.innerHTML = 'Enter Initials:   ' + 
+                    '<input id="initials">' +
+                    '<button id="submit-score">submit</button>';
+//         '<form class="submit">' +
+//             'Enter Initials: ' + 
+//             '<input id="initials">' +
+//             '<button id="submit-score">submit</button>' +
+//         '</form>';
     clearInterval(quizInterval);
     clearTimeout(quizTimer);
-    var box = document.querySelector(".question-box");
-    box.setAttribute("class", "result-box");
-    box.innerHTML = resultpageSnippet;
-    var score = document.querySelector("#score");
-    score.textContent += timeLeft + "!";
+    mainContent.innerHTML = "";
+    mainContent.appendChild(result);
+    mainContent.appendChild(score);
+    if (timeLeft === 0) {
+        var button = document.createElement("button");
+
+        result.textContent = "Time up!";
+        score.textContent = "Sorry that you fail to answer all the quetions in the given time! Please practise more and come back to try again!";
+        mainContent.appendChild(button);
+        button.setAttribute("id", "homepage-button");
+        button.setAttribute("class", "large-button");
+        button.textContent = "homepage";
+    }
+    else {
+        var form = document.createElement("form");
+
+        result.textContent = "Congratulations! You have answered all the questions!";
+        score.textContent = "Please enter your initials to submit your score!";
+        form.innerHTML = 'Enter Initials:' + 
+                        '<input id="initials">' +
+                        '<button id="submit-score">submit</button>';
+        mainContent.appendChild(form);
+    }
 }
 
 // update 'timeLeft' info: time < 0 when incorrect answer clicked when 'timeLeft' < 'timePenalty', in this situation update timeLeft to 0 since it cannot be smaller than 0
@@ -173,7 +194,8 @@ function setTimer(time) {
 function loadHighScores() {
     var scoreList;
     var scores = JSON.parse(localStorage.getItem("scores"));
-    topBar.innerHTML = "";
+    topBar.innerHTML = '<button id="go-back">Go Back</button>' +
+                       '<button id="clear-highscore">Clear Highscores</button>'
     mainContent.innerHTML = highscoreSnippet;
 
     if (scores == null) {
@@ -181,11 +203,12 @@ function loadHighScores() {
     }
 
     scoreList = document.querySelector("#highscore-list")
-    scoreList.setAttribute("style", "padding-left: 20px");
 
     for (var i = 0; i < scores.length; i++) {
         var score = document.createElement("li");
-        score.textContent = scores[i].name + " " + scores[i].score;
+        score.innerHTML = '<div>' + (i + 1) + "  " + scores[i].name + '</div>' +
+                          '<div>' + scores[i].score + '</div>';
+        score.setAttribute("class", "flex-ends");
         scoreList.appendChild(score);
     }
 }
@@ -212,7 +235,7 @@ function updateScoreRecord(newItem) {
 function displayResult() {
     clearTimeout(resultTimer);
     var result = document.querySelector(".question-result");
-    result.setAttribute("style", "border-top: 2px solid black; width: 100%; margin-top: 8px");
+    result.setAttribute("style", "opacity: 0.5; border-top: 2px solid rgb(180, 209, 180); width: 100%");
     resultTimer = setTimeout(function () {
         result.textContent = "";
         result.setAttribute("style", "border-top: none");
@@ -247,5 +270,4 @@ function createNewScore() {
     };
 }
 
-loadHomepage();
 document.body.addEventListener("click", selectPosition);

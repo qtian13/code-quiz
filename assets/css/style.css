@@ -1,50 +1,83 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;;
+    background-color: rgb(9, 5, 44);
+    color: rgb(180, 209, 180);
+}
+
 .top-bar {
-    color:  rgb(71, 39, 64);
+    color:  rgb(180, 209, 180);
+    height: 25px;
     width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin: 100px auto 30px;
 }
 
-#highscore {
-    position: absolute;
-    top: 0;
-    left: 0;
+.flex-ends {
+    display: flex;
+    justify-content: space-between;
 }
 
-#timeleft {
-    position: absolute;
-    top: 0;
-    right: 0;
+.top-bar button {
+    width: 150px;
 }
 
 main {
     width: 500px;
-    margin: 100px auto 100px auto;
-    padding-top: 100px;
+    margin: 100px auto;
 }
 
 h1,
 .rules {
     text-align: center;
+    color: rgb(180, 209, 180);
 }
 
-#startbutton {
+button {
+    background-color: rgb(180, 209, 180);
+    color: rgb(9, 5, 44);
+    border: none;
+    border-radius: 5px;
+}
+
+.large-button {
+    margin-top: 50px;
+    height: 60px;
+    width: 100px;
+}
+
+#start-button {
     display: block;
-    background-color: rgb(71, 39, 64);
-    color: white;
-    margin: 30px auto;
+    margin: 100px auto;
+}
+
+#homepage-button {
+    display: block;
+    margin: 50px auto;
 }
 
 .option {
     border-radius: 3px;
-    background-color: rgb(180, 157, 202);
-    padding: 4px;
+    color: rgb(9, 5, 44);
+    background-color: rgb(180, 209, 180);
+    padding: 4px 10px;
     margin-top: 3px;
 }
 
+.option:hover {
+    background-color: rgba(180, 209, 180, 0.6);
+}
+
+.question-info {
+    position: relative;
+    height: 50px;
+    padding-top: 30px;
+}
+
 .question-result {
-    margin-top: 15px;
+    position: absolute;
+    top: 5px;
 }
 
 .submit {
@@ -52,11 +85,35 @@ h1,
     align-items: center;
 }
 
-textarea, button {
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
 form {
     margin-top: 10px;
+}
+
+input {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.highscore-box {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ol {
+    padding: 0px;
+    margin-top: 20px;
+}
+
+li {
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding: 0px 10px;
+}
+
+li:nth-of-type(odd) {
+    background-color: rgb(180, 209, 180);
+    color: rgb(9, 5, 44);
 }
