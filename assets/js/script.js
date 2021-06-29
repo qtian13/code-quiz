@@ -26,15 +26,6 @@ var highscoreSnippet =
             '<ol id="highscore-list"></ol>' +
         '</div>'
 
-// load the questions from JSON file to current js file and initiate questions and timeTotal
-fetch('https://raw.githubusercontent.com/qtian13/code-quiz/main/assets/json/data.json').then(response => {
-    response.json().then(data => {
-        questions = data;
-        timeTotal = timePenalty * questions.length;
-        loadHomepage();
-    });
-});
-
 // load homepage with view highscore button, Timeleft info on the top
 // page title, quiz instruction and start quiz button in main content area
 function loadHomepage() {
@@ -42,7 +33,7 @@ function loadHomepage() {
                         '<div id="timeleft">Time left: 0</div>';
     timeLeftEl = document.querySelector("#timeleft")
     mainContent.innerHTML = homepageSnippet;
-    document.querySelector(".rules").textContent = "Please try your best to answer the following " + questions.length + " code-related questions within " + timeTotal + " seconds! Keep in mind that each incorrect answer will penalize your score/time by " + timePenalty + " points/seconds! Click the button to start the quiz when you are ready!";
+    document.querySelector(".rules").textContent = "Please try your best to answer the following " + questions.length + " code-related questions within " + timeTotal + " seconds! You can chek the time left on the top right during the quiz! Keep in mind that the incorrect answer will penalize your score/time by " + timePenalty + " points/seconds! Click the button to start the quiz when you are ready!";
 }
 
 // check the target of the event click on body and deal with the html accordingly
@@ -129,7 +120,6 @@ function loadQuestion(question) {
     }
     questionSerialNumber.setAttribute("style", "text-align: center");
     questionSerialNumber.textContent = (currentQuestionIndex + 1) + "/" + questions.length;
-
 }
 
 // delete the live interval and timeout; 
@@ -140,14 +130,9 @@ function loadResultPage() {
     var form = document.createElement("form");
 
     duringQuiz = false;
-    form.innerHTML = 'Enter Initials:   ' + 
+    form.innerHTML = 'Enter Initials:' + 
                     '<input id="initials">' +
                     '<button id="submit-score">submit</button>';
-//         '<form class="submit">' +
-//             'Enter Initials: ' + 
-//             '<input id="initials">' +
-//             '<button id="submit-score">submit</button>' +
-//         '</form>';
     clearInterval(quizInterval);
     clearTimeout(quizTimer);
     mainContent.innerHTML = "";
@@ -269,5 +254,14 @@ function createNewScore() {
         score: timeLeft,
     };
 }
+
+// load the questions from JSON file to current js file and initiate questions and timeTotal
+fetch('https://raw.githubusercontent.com/qtian13/code-quiz/main/assets/json/data.json').then(response => {
+    response.json().then(data => {
+        questions = data;
+        timeTotal = timePenalty * questions.length;
+        loadHomepage();
+    });
+});
 
 document.body.addEventListener("click", selectPosition);
