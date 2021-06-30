@@ -1,12 +1,18 @@
+:root {
+    --dark-color: rgb(9, 5, 44, 0.9);
+    --light-color: rgb(180, 209, 180);
+
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     font-family: 'Roboto', sans-serif;;
-    background-color: rgb(9, 5, 44);
-    color: rgb(180, 209, 180);
+    background-color: var(--dark-color);
+    color: var(--light-color);
 }
 
 .top-bar {
-    color:  rgb(180, 209, 180);
+    color:  var(--light-color);
     height: 25px;
     width: 600px;
     display: flex;
@@ -28,39 +34,36 @@ main {
     margin: 100px auto;
 }
 
-h1,
-.rules {
+#first-block {
+    margin-bottom: 50px;
+}
+
+.text-center {
     text-align: center;
-    color: rgb(180, 209, 180);
+}
+
+.justify-content-center {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 button {
-    background-color: rgb(180, 209, 180);
-    color: rgb(9, 5, 44);
+    background-color: var(--light-color);
+    color: var(--dark-color);
     border: none;
     border-radius: 5px;
 }
 
 .large-button {
-    margin-top: 50px;
-    height: 60px;
+    height: 50px;
     width: 100px;
-}
-
-#start-button {
-    display: block;
-    margin: 100px auto;
-}
-
-#homepage-button {
-    display: block;
-    margin: 50px auto;
 }
 
 .option {
     border-radius: 3px;
-    color: rgb(9, 5, 44);
-    background-color: rgb(180, 209, 180);
+    color: var(--dark-color);
+    background-color: var(--light-color);
     padding: 4px 10px;
     margin-top: 3px;
 }
@@ -69,20 +72,13 @@ button {
     background-color: rgba(180, 209, 180, 0.6);
 }
 
-.question-info {
+.position-relative {
     position: relative;
-    height: 50px;
-    padding-top: 30px;
 }
 
-.question-result {
+.position-absolute {
     position: absolute;
-    top: 5px;
-}
-
-.submit {
-    display: flex;
-    align-items: center;
+    bottom: -30px;
 }
 
 form {
@@ -92,6 +88,11 @@ form {
 input {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+#submit-score {
+    height: 20px;
+    width: 70px;
 }
 
 .highscore-box {
@@ -113,7 +114,23 @@ li {
     padding: 0px 10px;
 }
 
+/* make the list readable */
 li:nth-of-type(odd) {
-    background-color: rgb(180, 209, 180);
-    color: rgb(9, 5, 44);
+    background-color: var(--light-color);
+    color: var(--dark-color);
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        padding: 0px 5px;
+    }
+
+    .top-bar, main, .highscore-box {
+        width: 100%;
+    }
+    
+    .top-bar button {
+        color: var(--dark-color);
+        width: 120px;
+    }
 }

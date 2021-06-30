@@ -1,4 +1,5 @@
-var mainContent = document.querySelector("main");
+var firstBlock = document.querySelector("#first-block");
+var secondBlock = document.querySelector("#second-block");
 var topBar = document.querySelector(".top-bar");
 var timeLeftEl;
 var timeTotal;
@@ -12,35 +13,45 @@ var validInitial = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var questions;
 var currentQuestionIndex;
 
-
-// the homepage content: title, instructions and start quiz button
-var homepageSnippet = 
-        '<h1>Coding Quiz Challenge</h1>' +
-        '<p class="rules"></p>' +
-        '<button id="start-button" class="large-button">Start Quiz</button>';
-
-// display highscore page
-var highscoreSnippet =
-        '<div class="highscore-box">' +
-            '<h1>Highscores</h1>' +
-            '<ol id="highscore-list"></ol>' +
-        '</div>'
-
 // load homepage with view highscore button, Timeleft info on the top
 // page title, quiz instruction and start quiz button in main content area
 function loadHomepage() {
-    topBar.innerHTML = '<div id="highscore">View Highscores</div>' +
-                        '<div id="timeleft">Time left: 0</div>';
-    timeLeftEl = document.querySelector("#timeleft")
-    mainContent.innerHTML = homepageSnippet;
-    document.querySelector(".rules").textContent = "Please try your best to answer the following " + questions.length + " code-related questions within " + timeTotal + " seconds! You can chek the time left on the top right during the quiz! Keep in mind that the incorrect answer will penalize your score/time by " + timePenalty + " points/seconds! Click the button to start the quiz when you are ready!";
+    var title = document.createElement("h1");
+    var rules = document.createElement("div");
+    var startButton = document.createElement("button");
+    var highScore = document.createElement("div");
+    timeLeftEl = document.createElement("div");
+
+    topBar.innerHTML = "";
+    firstBlock.innerHTML = "";
+    secondBlock.innerHTML = "";
+    // append high-score button and time left info to the top
+    highScore.setAttribute("id", "high-score")
+    highScore.textContent = "View Highscores";
+    timeLeftEl.textContent = "Time left: " + timeTotal + "s";
+    topBar.appendChild(highScore);
+    topBar.appendChild(timeLeftEl);
+
+    // append title and rules to the first block in the main content
+    title.textContent = "Coding Quiz Challenge";
+    title.setAttribute("class", "text-center");
+    rules.textContent = "Please try your best to answer the following " + questions.length + " code-related questions within " + timeTotal + " seconds! You can check the time left on the top right during the quiz! Keep in mind that the incorrect answer will penalize your score/time by " + timePenalty + " points/seconds! Click the button to start the quiz when you are ready!";
+    rules.setAttribute("class", "text-center");
+    firstBlock.appendChild(title);
+    firstBlock.appendChild(rules);
+    // append start-quiz-button the second block in the main content
+    startButton.textContent = "Start Quiz";
+    startButton.setAttribute("id", "start-quiz-button");
+    startButton.setAttribute("class", "large-button");
+    secondBlock.appendChild(startButton);
+    secondBlock.setAttribute("class", "justify-content-center");
 }
 
 // check the target of the event click on body and deal with the html accordingly
 function selectPosition(event) {
     var element = event.target;
     // start quiz when start quiz button clicked
-    if (element.matches("#start-button")) {
+    if (element.matches("#start-quiz-button")) {
         startQuiz();
     // check the result when option of question is clicked
     } else if (element.matches(".option")) {
@@ -55,7 +66,7 @@ function selectPosition(event) {
         }
         loadNextQuestion();
     // load highscore page when 'view highscore' button is clicked
-    } else if (element.matches("#highscore") && !duringQuiz) {
+    } else if (element.matches("#high-score") && !duringQuiz) {
         loadHighScores();
     // record the score and load updated highscore page when submit form button is clicked
     } else if (element.matches("#submit-score")) {
@@ -65,11 +76,11 @@ function selectPosition(event) {
         if (createNewScore() != null) {
             updateScoreRecord(newScore);
             currentQuestionIndex = 0;
-            mainContent.innerHTML = "";
+            firstBlock.innerHTML = "";
             loadHighScores();
         }
     // go back to homepage when 'go back' button on view highscore page is clicked
-    } else if (element.matches("#go-back") || element.matches("#homepage-button")) {
+    } else if (element.matches("#go-back")) {
         loadHomepage();
     } 
     // remove the item scores in localStorage and reload highscore page
@@ -85,7 +96,7 @@ function startQuiz() {
     timeLeft = timeTotal;
     quizInterval = setInterval(function() {
         timeLeft--;
-        timeLeftEl.textContent = "Time left: " + timeLeft;
+        timeLeftEl.textContent = "Time left: " + timeLeft + "s";
     }, 1000 * 1);
     setTimer(timeLeft);
     currentQuestionIndex = 0;
@@ -95,30 +106,30 @@ function startQuiz() {
 
 //create block elements as containers of current question and the result of previous question
 function createQuestionContainer() {
-    mainContent.innerHTML = '<div class="question-box"></div>' +
-                            '<div class="question-info">' +
-                                '<div class="question-result"></div>' +
-                                '<div class="question-serial-number"></div>' +
-                            '</div>';
+    firstBlock.setAttribute("class", "position-relative");
+    firstBlock.innerHTML = 
+        '<div class="content-box">' +
+        '</div>' +
+        '<div class="question-result position-absolute"></div>';
+    secondBlock.innerHTML = '<div class="question-serial-number"></div>';
 }
 
 // display current question
 function loadQuestion(question) {
-    var questionBox = document.querySelector(".question-box");
-    var questionDescrEl = document.createElement("h2");
-    var optionsEl = document.createElement("div");
+    var contentBox = document.querySelector(".content-box");
+    var contentTitle = document.createElement("h2");
+    var contentDetail = document.createElement("div");
     var questionSerialNumber = document.querySelector(".question-serial-number");
-    questionBox.appendChild(questionDescrEl);
-    questionBox.appendChild(optionsEl);
-    questionDescrEl.textContent = question.questionDescr;
+    contentBox.appendChild(contentTitle);
+    contentBox.appendChild(contentDetail);
+    contentTitle.textContent = question.questionDescr;
     for (var i = 0; i < question.options.length; i++) {
         var optionElement = document.createElement("div");
         optionElement.setAttribute("class", "option");
         optionElement.setAttribute("data-ans", i == question.correctIndex? "true" : "false");
-        optionsEl.appendChild(optionElement);
+        contentDetail.appendChild(optionElement);
         optionElement.textContent = question.options[i];
     }
-    questionSerialNumber.setAttribute("style", "text-align: center");
     questionSerialNumber.textContent = (currentQuestionIndex + 1) + "/" + questions.length;
 }
 
@@ -128,35 +139,27 @@ function loadResultPage() {
     var result = document.createElement("h2");
     var score = document.createElement("div");
     var form = document.createElement("form");
+    var contentBox = document.querySelector(".content-box");
 
     duringQuiz = false;
-    form.innerHTML = 'Enter Initials:' + 
-                    '<input id="initials">' +
-                    '<button id="submit-score">submit</button>';
     clearInterval(quizInterval);
     clearTimeout(quizTimer);
-    mainContent.innerHTML = "";
-    mainContent.appendChild(result);
-    mainContent.appendChild(score);
-    if (timeLeft === 0) {
-        var button = document.createElement("button");
-
-        result.textContent = "Time up!";
-        score.textContent = "Sorry that you fail to answer all the quetions in the given time! Please practise more and come back to try again!";
-        mainContent.appendChild(button);
-        button.setAttribute("id", "homepage-button");
-        button.setAttribute("class", "large-button");
-        button.textContent = "homepage";
-    }
-    else {
-        var form = document.createElement("form");
-
-        result.textContent = "Congratulations! You have answered all the questions!";
-        score.textContent = "Please enter your initials to submit your score!";
-        form.innerHTML = 'Enter Initials:' + 
+    contentBox.innerHTML = "";
+    secondBlock.innerHTML = "";
+    contentBox.appendChild(result);
+    contentBox.appendChild(score);
+    form.innerHTML = 'Enter Initials:' + 
                         '<input id="initials">' +
                         '<button id="submit-score">submit</button>';
-        mainContent.appendChild(form);
+    contentBox.appendChild(form);
+
+    if (timeLeft === 0) {
+        result.textContent = "Time up!";
+        score.textContent = "Sorry that you fail to answer all the quetions in the given time! Please practise more and come back to try again!";
+    }
+    else {
+        result.textContent = "Congratulations! You have answered all the questions!";
+        score.textContent = "Please enter your initials to submit your score!";
     }
 }
 
@@ -166,7 +169,7 @@ function loadResultPage() {
 // return false if no time left for next question, else return true
 function setTimer(time) {
     timeLeft = time < 0 ? 0 : time;
-    timeLeftEl.textContent = "Time left: " + timeLeft;
+    timeLeftEl.textContent = "Time left: " + timeLeft + "s";
     clearTimeout(quizTimer);
     quizTimer = setTimeout(function() {
         loadResultPage();
@@ -175,26 +178,30 @@ function setTimer(time) {
     return timeLeft > 0;
 }
 
-// display high scores
+// display high scores ordered by the score from high to lows
 function loadHighScores() {
     var scoreList;
     var scores = JSON.parse(localStorage.getItem("scores"));
-    topBar.innerHTML = '<button id="go-back">Go Back</button>' +
-                       '<button id="clear-highscore">Clear Highscores</button>'
-    mainContent.innerHTML = highscoreSnippet;
+    topBar.innerHTML = 
+        '<button id="go-back">Go Back</button>' +
+        '<button id="clear-highscore">Clear Highscores</button>';
+    firstBlock.innerHTML = 
+        '<div class="highscore-box">' +
+            '<h1 class="text-center">HIGH SCORES &#x1F3C6</h1>' +
+            '<ol id="high-score-list"></ol>' +
+        '</div>';
+    secondBlock.innerHTML = "";
 
-    if (scores == null) {
-        return;
-    }
+    if (scores !== null) {
+        scoreList = document.querySelector("#high-score-list")
 
-    scoreList = document.querySelector("#highscore-list")
-
-    for (var i = 0; i < scores.length; i++) {
-        var score = document.createElement("li");
-        score.innerHTML = '<div>' + (i + 1) + "  " + scores[i].name + '</div>' +
-                          '<div>' + scores[i].score + '</div>';
-        score.setAttribute("class", "flex-ends");
-        scoreList.appendChild(score);
+        for (var i = 0; i < scores.length; i++) {
+            var score = document.createElement("li");
+            score.innerHTML = '<div>' + (i + 1) + "  " + scores[i].name + '</div>' +
+                            '<div>' + scores[i].score + '</div>';
+            score.setAttribute("class", "flex-ends");
+            scoreList.appendChild(score);
+        }
     }
 }
 
@@ -224,16 +231,15 @@ function displayResult() {
     resultTimer = setTimeout(function () {
         result.textContent = "";
         result.setAttribute("style", "border-top: none");
-    }, 1000 * 1);
+    }, 1000 * 1.5);
     return result;
 }
-
 
 // load next question if any
 // or load result page
 function loadNextQuestion() {
     currentQuestionIndex++;
-    document.querySelector(".question-box").innerHTML = "";
+    document.querySelector(".content-box").innerHTML = "";
     if (currentQuestionIndex == questions.length) {
         loadResultPage();
     } else {
