@@ -132,6 +132,6 @@ li:nth-of-type(odd) {
     
     .top-bar button {
         color: var(--dark-color);
-        width: 120px;
+        width: 130px;
     }
 }

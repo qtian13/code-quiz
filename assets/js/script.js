@@ -151,8 +151,8 @@ function loadResultPage() {
     secondBlock.innerHTML = "";
     contentBox.appendChild(result);
     contentBox.appendChild(score);
-    form.innerHTML = 'Enter Initials:' + 
-                        '<input id="initials">' +
+    form.innerHTML = '<label for="initials">Enter Initials:</label>' + 
+                        '<input type="text" id="initials">' +
                         '<button id="submit-score">submit</button>';
     contentBox.appendChild(form);
 
