@@ -30,6 +30,8 @@ git clone https://github.com/qtian13/code-quiz.git
 5. The data of questions are stored in JSON file
 ## Page URL
 https://qtian13.github.io/code-quiz/
+## Page Demo
+![highscore](assets/images/code_quiz_demo.gif)
 ## Page Screen Shot with Different Screen Width
 ![desktop_screen](assets/images/homepage.png)
 ![tablet_screen](assets/images/tablet_screen.png)

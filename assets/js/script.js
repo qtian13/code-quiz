@@ -154,7 +154,7 @@ function loadResultPage() {
     contentBox.appendChild(form);
 
     if (timeLeft === 0) {
-        result.textContent = "Time up!";
+        result.textContent = "Time's up!";
         score.textContent = "Sorry that you fail to answer all the quetions in the given time! Please practise more and come back to try again!";
     }
     else {
