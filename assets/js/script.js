@@ -1,6 +1,6 @@
+var topBar = document.querySelector(".top-bar");
 var firstBlock = document.querySelector("#first-block");
 var secondBlock = document.querySelector("#second-block");
-var topBar = document.querySelector(".top-bar");
 var timeLeftEl;
 var timeTotal;
 var timePenalty = 10;
@@ -35,7 +35,10 @@ function loadHomepage() {
     // append title and rules to the first block in the main content
     title.textContent = "Coding Quiz Challenge";
     title.setAttribute("class", "text-center");
-    rules.textContent = "Please try your best to answer the following " + questions.length + " code-related questions within " + timeTotal + " seconds! You can check the time left on the top right during the quiz! Keep in mind that the incorrect answer will penalize your score/time by " + timePenalty + " points/seconds! Click the button to start the quiz when you are ready!";
+    rules.innerHTML = 
+        '<p>Please try your best to answer the following ' + questions.length + ' code-related multiple-choice questions within ' + timeTotal + ' seconds!</p>' + 
+        '<p>Keep in mind that the incorrect answer will penalize your score/time by ' + timePenalty + ' points/seconds! The amount of time left is showed on the top right during the quiz. Below a question displays its question number.<p>' +
+        '<p>Click the button to start the quiz when you are ready!</p>';
     rules.setAttribute("class", "text-center");
     firstBlock.appendChild(title);
     firstBlock.appendChild(rules);
@@ -155,10 +158,10 @@ function loadResultPage() {
 
     if (timeLeft === 0) {
         result.textContent = "Time's up!";
-        score.textContent = "Sorry that you fail to answer all the quetions in the given time! Please practise more and come back to try again!";
+        score.textContent = "Sorry that you fail the quiz! Please practise more and try again later!";
     }
     else {
-        result.textContent = "Congratulations! You have answered all the questions!";
+        result.textContent = "Congratulations! Your final score is " + timeLeft + "!";
         score.textContent = "Please enter your initials to submit your score!";
     }
 }

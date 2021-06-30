@@ -120,6 +120,7 @@ li:nth-of-type(odd) {
     color: var(--dark-color);
 }
 
+/* resize element to fit mobile screen */
 @media screen and (max-width: 768px) {
     body {
         padding: 0px 5px;
