@@ -13,7 +13,7 @@ var validInitial = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var questions;
 var currentQuestionIndex;
 
-// load homepage with view highscore button, Timeleft info on the top
+// load homepage with View High Score button, Timeleft info on the top
 // page title, quiz instruction and start quiz button in main content area
 function loadHomepage() {
     var title = document.createElement("h1");
@@ -27,7 +27,7 @@ function loadHomepage() {
     secondBlock.innerHTML = "";
     // append high-score button and time left info to the top
     highScore.setAttribute("id", "high-score")
-    highScore.textContent = "View Highscores";
+    highScore.textContent = "View High Scores";
     timeLeftEl.textContent = "Time left: " + timeTotal + "s";
     topBar.appendChild(highScore);
     topBar.appendChild(timeLeftEl);
@@ -68,26 +68,26 @@ function selectPosition(event) {
             }
         }
         loadNextQuestion();
-    // load highscore page when 'view highscore' button is clicked
+    // load high score page when 'View High Scores' button is clicked
     } else if (element.matches("#high-score") && !duringQuiz) {
         loadHighScores();
-    // record the score and load updated highscore page when submit form button is clicked
+    // record the score and load updated high score page when submit form button is clicked
     } else if (element.matches("#submit-score")) {
         // stop default function to deal with input info
         event.preventDefault();
-        // add current score to record and load highscore page
+        // add current score to record and load high score page
         if (createNewScore() != null) {
             updateScoreRecord(newScore);
             currentQuestionIndex = 0;
             firstBlock.innerHTML = "";
             loadHighScores();
         }
-    // go back to homepage when 'go back' button on view highscore page is clicked
+    // go back to homepage when 'go back' button on view high score page is clicked
     } else if (element.matches("#go-back")) {
         loadHomepage();
     } 
-    // remove the item scores in localStorage and reload highscore page
-    else if (element.matches("#clear-highscore")) {
+    // remove the item scores in localStorage and reload high score page
+    else if (element.matches("#clear-high-score")) {
         localStorage.removeItem("scores");
         loadHighScores();
     }
@@ -187,9 +187,9 @@ function loadHighScores() {
     var scores = JSON.parse(localStorage.getItem("scores"));
     topBar.innerHTML = 
         '<button id="go-back">Go Back</button>' +
-        '<button id="clear-highscore">Clear Highscores</button>';
+        '<button id="clear-high-score">Clear High Scores</button>';
     firstBlock.innerHTML = 
-        '<div class="highscore-box">' +
+        '<div class="high-score-box">' +
             '<h1 class="text-center">HIGH SCORES &#x1F3C6</h1>' +
             '<ol id="high-score-list"></ol>' +
         '</div>';

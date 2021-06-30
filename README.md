@@ -17,14 +17,15 @@ git clone https://github.com/qtian13/code-quiz.git
     * A series of multiple-choice questions are rendered one by one. 
     * The background color of the choice would change while the mouse hover over it which helps user choose the one they want.
     * User can check the time left on the top right corner.
-    * Users can also check the serial number of current question at the bottom of the page. 
+    * User can also check the serial number of current question at the bottom of the page. 
     ![duringquiz](assets/images/duringquiz.png)
     * When a choice is clicked, the next question renders right away
-    * The result of the previous question is displayed below the question card and disappear after 1.5 second or options of current questions is clicked which comes early.
+    * The result of the previous question is displayed below the question card and disappear after 1.5 seconds or choice of current question is clicked, whichever comes earlier.
     ![displayresult](assets/images/displayresult.png)
 3. The quiz result page is loaded when time is up or when all the questions are done. Users can enter their initials and click `submit` to record their score. The initials and score would be added to quiz results stored in `Local Storage`. The high score page would load after the form is submitted.
 ![quizends](assets/images/quizends.png)
-4. When the high score page is loaded, user can view the quiz results ranked in descending order. There are two buttons on this page: One to go back to the homepage and the other one is to clear the scores from UI and in `Local Storage`
+![quizends](assets/images/quizends1.png)
+4. When the high score page is loaded, user can view the quiz results ranked in descending order. There are two buttons on this page: Click button `Go Back` to load homepage and button `Clear High Score` to clear scores from UI and in `Local Storage`.
 ![highscore](assets/images/highscore.png)
 5. The page layout is screen size responsive.
 5. Question data are stored in JSON file.
