@@ -1,4 +1,7 @@
 # code-quiz
+
+[![license](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 This project provides a series of code-related multiple-choice questions. Users who answer questions fast and correctly would get batter score and higher rank.
 
 ## Getting Started
@@ -39,7 +42,7 @@ https://qtian13.github.io/code-quiz/
 ![mobile_screen](assets/images/mobile_screen.png)
 ## Author
 Qiushuang Tian
-- [Link to Portfolio Site](https://qtian13.github.io/)
+- [Link to Portfolio Site](https://qtian13.github.io/portfolioUpdate/)
 - [Link to Github](https://github.com/qtian13)
 - [Link to LinkedIn](https://www.linkedin.com/in/qiushuang-tian-a9754248/)
 ## Acknowledgments
